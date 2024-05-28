@@ -116,6 +116,23 @@ module.exports = {
                             }
                         });
                         break;
+						
+					case "VOLUMEUP":
+                        mpdClient.volumeUp(function(err, status) {
+                                if(err) {
+                                    console.error('error setting volume: ' + err);
+									sendWSSMessage(ws, 'MPD_OFFLINE');
+                                }
+                            });
+                        break;
+					case "VOLUMEDOWN":
+						mpdClient.volumeDown(function(err, status) {
+                                if(err) {
+									console.error('error setting volume: ' + err);
+                                    sendWSSMessage(ws, 'MPD_OFFLINE');
+                                } 
+                            });
+						break;
                 }
 
             });

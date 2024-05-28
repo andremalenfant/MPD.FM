@@ -144,6 +144,63 @@ function sendPlay(play, callback) {
     });
 }
 
+function sendVolumeUp(callback) {
+	sendCommands(cmd("status", []),
+		function(err, msg) {
+			if (err) {
+				callback(err);
+			} else {
+                var data = mpd.parseKeyValueMessage(msg);
+                var volume = 0;
+                for (const [key, value] of Object.entries(data)) {
+                    if(key.toLowerCase() === 'volume') {
+                        volume = Number(value);
+                        break;
+                    }
+                }
+				volume = Math.min(100, volume + 5);
+				sendCommands(cmd("setvol", [volume]), 
+					function(err, msg) {
+						if (err) {
+							callback(err);
+						} else {
+							callback(null);
+						}
+					}
+				);			
+			}
+		});
+}
+
+function sendVolumeDown(callback) {
+	sendCommands(cmd("status", []),
+		function(err, msg) {
+			if (err) {
+				callback(err);
+			} else {
+                var data = mpd.parseKeyValueMessage(msg);
+                var volume = 0;
+                for (const [key, value] of Object.entries(data)) {
+                    if(key.toLowerCase() === 'volume') {
+                        volume = Number(value);
+                        break;
+                    }
+                }
+				volume = Math.max(0, volume - 5);
+				sendCommands(cmd("setvol", [volume]), 
+					function(err, msg) {
+						if (err) {
+							callback(err);
+						} else {
+							callback(null);
+						}
+					}
+				);		
+			}
+		});
+}
+
+
 var self = module.exports = {
 
     setup: function setup(options) {
@@ -175,4 +232,13 @@ var self = module.exports = {
         debug('play ' + stream);
         sendPlayStation(stream, callback);
     },
+	
+	volumeUp: function volumeUp(callback) {
+		sendVolumeUp(callback);
+	},
+	
+	volumeDown: function volumeDown(callback) {
+		sendVolumeDown(callback);
+	},
+
 };

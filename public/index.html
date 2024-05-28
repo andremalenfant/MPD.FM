@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
+
         <div id="app">
             <!--[if lte IE 9]>
                 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
@@ -34,24 +35,10 @@
             <div class="content">
 
                 <radio-station 
-                    inline-template
-                    v-for="item in stationList"
-                    v-bind:station="item"
-                    v-bind:key="item.id">
-                    <div class="pure-g" v-on:click="onPlayStation(item.stream)">
-                        <div class="pure-u-1-4 l-box">
-                            <div class="station-logo">
-                                <img class="pure-img" v-bind:src="item.logo" v-bind:alt="item.station">
-                            </div>
-                        </div>
-                        <div class="pure-u-3-4 l-box station-text">
-                            <div class="station-text-inside">
-                                <p class="station-heading">{{ item.station }}</p>
-                                <p>{{ item.desc }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="sep-line">
+                    v-for="station in stationList"
+                    v-bind:station="station"
+                    v-bind:key="station.id"
+                    @on-play-station="onPlayStation">
                 </radio-station>
 
                 <div class="pure-g blank-radio">
@@ -67,7 +54,7 @@
             </div>
 
             <div class="player">
-                <div class="pure-g player-content">
+                <span class="pure-g player-content" style="display: inline;">
                         <div class="pure-u-1-4 l-box" v-on:click="onPlayButton">
                             <div class="station-logo">
 
@@ -90,13 +77,17 @@
                                 <p>{{ song }}</p>
                             </div>
                         </div>
-                </div>
+                </span >
+				<span>
+					<span v-on:click="onVolumeDown" style="font-size: 10em; transform: rotate(90deg);">&lt;</span>
+					<span v-on:click="onVolumeUp" style="font-size: 10em; transform: rotate(90deg);">&gt;</span>
+				</span>				
             </div>
-            
-            <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-            <script src="js/plugins.js"></script>
-            <script src="js/vendor/ReconnectingWebSocket.js"></script>
-            <script src="js/main.js"></script>
         </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/vendor/ReconnectingWebSocket.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>
